@@ -1,0 +1,26 @@
+{
+  "name": "hello-react",
+  "version": "0.1.0",
+  "scripts": {
+    "build": "bsb -make-world && webpack",
+    "start": "bsb -make-world && webpack && node server.js",
+    "clean": "bsb -clean-world",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "BuckleScript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.3",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "reason-react": ">=0.4.0"
+  },
+  "devDependencies": {
+    "bs-platform": "^3.1.5",
+    "webpack": "^4.0.1",
+    "webpack-cli": "^2.0.10"
+  }
+}
