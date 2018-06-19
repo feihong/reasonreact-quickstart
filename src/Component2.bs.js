@@ -12,35 +12,37 @@ function str(prim) {
   return prim;
 }
 
+Random.self_init(/* () */0);
+
 var component = ReasonReact.reducerComponent("Component2");
 
 function getMode(mode) {
-  if (mode === /* Either */2) {
+  if (mode === "Either") {
     var match = Random.$$int(2);
     if (match !== 0) {
-      return /* Emoji */1;
+      return "Emoji";
     } else {
-      return /* Hanzi */0;
+      return "Hanzi";
     }
   } else {
     return mode;
   }
 }
 
-function fetchSomething(self) {
-  var mode = getMode(self[/* state */1][/* mode */1]);
+function fetchSomething(param) {
+  var send = param[/* send */3];
+  var mode = getMode(param[/* state */1][/* mode */1]);
   switch (mode) {
-    case 0 : 
-        return ApiClient$ReactTemplate.getHanzi((function (hanzi) {
-                      return Curry._1(self[/* send */3], /* CharLoaded */Block.__(0, [hanzi[/* text */0]]));
-                    }));
-    case 1 : 
+    case "Emoji" : 
         return ApiClient$ReactTemplate.getEmoji((function (emoji) {
-                      return Curry._1(self[/* send */3], /* CharLoaded */Block.__(0, [emoji[/* text */1]]));
+                      return Curry._1(send, /* CharLoaded */Block.__(0, [emoji[/* text */1]]));
                     }));
-    case 2 : 
-        return /* () */0;
-    
+    case "Hanzi" : 
+        return ApiClient$ReactTemplate.getHanzi((function (hanzi) {
+                      return Curry._1(send, /* CharLoaded */Block.__(0, [hanzi[/* text */0]]));
+                    }));
+    default:
+      return /* () */0;
   }
 }
 
@@ -57,37 +59,57 @@ function make() {
           /* willUnmount */component[/* willUnmount */6],
           /* willUpdate */component[/* willUpdate */7],
           /* shouldUpdate */component[/* shouldUpdate */8],
-          /* render */(function (self) {
-              var changeModeOption = function (label, mode) {
+          /* render */(function (param) {
+              var send = param[/* send */3];
+              var state = param[/* state */1];
+              var changeModeOption = function (label) {
                 return React.createElement("option", {
-                            onClick: (function () {
-                                return Curry._1(self[/* send */3], /* ChangeMode */Block.__(1, [mode]));
-                              })
+                            value: label
                           }, label);
               };
-              return React.createElement("div", undefined, React.createElement("select", undefined, changeModeOption("Hanzi", /* Hanzi */0), changeModeOption("Emoji", /* Emoji */1), changeModeOption("Either", /* Either */2)), React.createElement("button", {
-                              className: "btn btn-primary btn-sm",
-                              onClick: (function () {
-                                  return Curry._1(self[/* send */3], /* Fetch */0);
-                                })
-                            }, "Generate"), React.createElement("div", {
+              return React.createElement("div", undefined, React.createElement("div", {
+                              className: "form-inline"
+                            }, React.createElement("select", {
+                                  className: "form-control mr-2",
+                                  value: state[/* mode */1],
+                                  onChange: (function (evt) {
+                                      return Curry._1(send, /* ChangeMode */Block.__(1, [evt.target.value]));
+                                    })
+                                }, changeModeOption("Hanzi"), changeModeOption("Emoji"), changeModeOption("Either")), React.createElement("button", {
+                                  className: "btn btn-primary btn-sm mr-2",
+                                  onClick: (function () {
+                                      return Curry._1(send, /* Fetch */0);
+                                    })
+                                }, "Generate"), React.createElement("button", {
+                                  className: "btn btn-primary btn-sm",
+                                  onClick: (function () {
+                                      return Curry._1(send, /* Clear */1);
+                                    })
+                                }, "Clear")), React.createElement("div", {
                               className: "chars"
-                            }, $$Array.map((function (ch) {
+                            }, $$Array.mapi((function (i, ch) {
                                     return React.createElement("span", {
-                                                key: ch
+                                                key: String(i)
                                               }, ch);
-                                  }), self[/* state */1][/* chars */0])));
+                                  }), state[/* chars */0])));
             }),
           /* initialState */(function () {
               return /* record */[
                       /* chars : array */[],
-                      /* mode : Either */2
+                      /* mode */"Either"
                     ];
             }),
           /* retainedProps */component[/* retainedProps */11],
           /* reducer */(function (action, state) {
               if (typeof action === "number") {
-                return /* SideEffects */Block.__(1, [fetchSomething]);
+                if (action === 0) {
+                  return /* SideEffects */Block.__(1, [fetchSomething]);
+                } else {
+                  return /* Update */Block.__(0, [/* record */[
+                              /* chars : array */[],
+                              /* mode */state[/* mode */1]
+                            ]]);
+                }
               } else if (action.tag) {
                 return /* Update */Block.__(0, [/* record */[
                             /* chars */state[/* chars */0],
@@ -113,4 +135,4 @@ export {
   make ,
   
 }
-/* component Not a pure module */
+/*  Not a pure module */

@@ -1,41 +1,39 @@
 let str = ReasonReact.string;
 
-type mode = 
-  | Hanzi
-  | Emoji
-  | Either;
+Random.self_init();
 
 /* State declaration */
 type state = {
   chars: array(string),
-  mode: mode,
+  mode: string,
 };
 
 /* Action declaration */
 type action =
   | Fetch
+  | Clear
   | CharLoaded(string)
-  | ChangeMode(mode);
+  | ChangeMode(string);
 
 /* Component template declaration.
    Needs to be **after** state and action declarations! */
 let component = ReasonReact.reducerComponent("Component2");
 
 let getMode = (mode) =>
-  if (mode == Either) {
+  if (mode == "Either") {
     switch (Random.int(2)) {
-    | 0 => Hanzi
-    | _ => Emoji
+    | 0 => "Hanzi"
+    | _ => "Emoji"
     }
   } else 
     mode;
 
-let fetchSomething = self => {
+let fetchSomething = ({ReasonReact.state, send}) => {
   /* You need an extra annotation to help type inference */
-  let mode = getMode(self.ReasonReact.state.mode);
+  let mode = getMode(state.mode);
   switch (mode) {
-  | Hanzi => ApiClient.getHanzi(hanzi => hanzi.text |. CharLoaded |. self.send)
-  | Emoji => ApiClient.getEmoji(emoji => emoji.text |. CharLoaded |. self.send)
+  | "Hanzi" => ApiClient.getHanzi(hanzi => hanzi.text |. CharLoaded |. send)
+  | "Emoji" => ApiClient.getEmoji(emoji => emoji.text |. CharLoaded |. send)
   | _ => ()
   }
 };
@@ -46,42 +44,65 @@ let make = (_children) => {
   /* spread the other default fields of component here and override a few */
   ...component,
 
-  initialState: () => {chars: [||], mode: Either},
+  initialState: () => {
+    chars: [||], 
+    mode: "Either"
+  },
 
   didMount: self => self.send(Fetch),
 
   /* State transitions */
-  reducer: (action, state) =>
+  reducer: (action, state) => ReasonReact.(
     switch (action) {
-    | ChangeMode(mode) => ReasonReact.Update({...state, mode: mode})
-    | Fetch => ReasonReact.SideEffects(fetchSomething)
-    | CharLoaded(text) => 
-        ReasonReact.Update({
-          ...state, 
-          chars: Array.append(state.chars, [|text|])
-        })
-    },
+      | Fetch => SideEffects(fetchSomething)
+      | Clear => Update({...state, chars: [||]})
+      | ChangeMode(mode) => Update({...state, mode: mode})
+      | CharLoaded(text) => 
+          Update({
+            ...state, 
+            chars: Array.append(state.chars, [|text|])
+          })
+    }
+  ),
 
-  render: self => {
-    let changeModeOption = (label, mode) =>
-      <option onClick=(_evt => self.send(ChangeMode(mode)))>
+  render: ({state, send}) => {
+    let changeModeOption = (label) =>
+      <option value=label>
         (str(label))
       </option>;
 
     <div>
-      <select>
-        (changeModeOption("Hanzi", Hanzi))
-        (changeModeOption("Emoji", Emoji))
-        (changeModeOption("Either", Either))
-      </select>
-      <button className="btn btn-primary btn-sm"
-              onClick=(_ => self.send(Fetch))>
-        (str("Generate"))
-      </button>
+      <div className="form-inline">
+        <select className="form-control mr-2" 
+                value=state.mode
+                onChange=(evt =>
+                  send(
+                    ChangeMode(
+                      (
+                        evt 
+                        |. ReactEventRe.Form.target 
+                        |. ReactDOMRe.domElementToObj
+                      )##value                      
+                    )
+                  )
+                )>
+          (changeModeOption("Hanzi"))
+          (changeModeOption("Emoji"))
+          (changeModeOption("Either"))
+        </select>
+        <button className="btn btn-primary btn-sm mr-2"
+                onClick=(_ => send(Fetch))>
+          (str("Generate"))
+        </button>
+        <button className="btn btn-primary btn-sm"
+                onClick=(_ => send(Clear))>
+          (str("Clear"))
+        </button>
+      </div>
       <div className="chars">
         (
-          self.state.chars 
-          |> Array.map(ch => <span key=ch>(str(ch))</span>)
+          state.chars 
+          |> Array.mapi((i, ch) => <span key=string_of_int(i)>(str(ch))</span>)
           |> ReasonReact.array
         )
       </div>
