@@ -4,6 +4,7 @@ import * as $$Array from "bs-platform/lib/es6/array.js";
 import * as Block from "bs-platform/lib/es6/block.js";
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
+import * as Printf from "bs-platform/lib/es6/printf.js";
 import * as Random from "bs-platform/lib/es6/random.js";
 import * as ReasonReact from "reason-react/src/ReasonReact.js";
 import * as ApiClient$ReactTemplate from "./ApiClient.bs.js";
@@ -35,11 +36,43 @@ function fetchSomething(param) {
   switch (mode) {
     case "Emoji" : 
         return ApiClient$ReactTemplate.getEmoji((function (emoji) {
-                      return Curry._1(send, /* CharLoaded */Block.__(0, [emoji[/* text */1]]));
+                      return Curry._1(send, /* CharLoaded */Block.__(0, [/* record */[
+                                      /* text */emoji[/* text */1],
+                                      /* caption */Curry._2(Printf.sprintf(/* Format */[
+                                                /* String */Block.__(2, [
+                                                    /* No_padding */0,
+                                                    /* String_literal */Block.__(11, [
+                                                        " (",
+                                                        /* String */Block.__(2, [
+                                                            /* No_padding */0,
+                                                            /* Char_literal */Block.__(12, [
+                                                                /* ")" */41,
+                                                                /* End_of_format */0
+                                                              ])
+                                                          ])
+                                                      ])
+                                                  ]),
+                                                "%s (%s)"
+                                              ]), emoji[/* shortname */0], emoji[/* category */2])
+                                    ]]));
                     }));
     case "Hanzi" : 
         return ApiClient$ReactTemplate.getHanzi((function (hanzi) {
-                      return Curry._1(send, /* CharLoaded */Block.__(0, [hanzi[/* text */0]]));
+                      return Curry._1(send, /* CharLoaded */Block.__(0, [/* record */[
+                                      /* text */hanzi[/* text */0],
+                                      /* caption */Curry._1(Printf.sprintf(/* Format */[
+                                                /* String_literal */Block.__(11, [
+                                                    "Code point: ",
+                                                    /* Int */Block.__(4, [
+                                                        /* Int_d */0,
+                                                        /* No_padding */0,
+                                                        /* No_precision */0,
+                                                        /* End_of_format */0
+                                                      ])
+                                                  ]),
+                                                "Code point: %d"
+                                              ]), hanzi[/* ordinal */1])
+                                    ]]));
                     }));
     default:
       return /* () */0;
@@ -87,10 +120,11 @@ function make() {
                                     })
                                 }, "Clear")), React.createElement("div", {
                               className: "chars"
-                            }, $$Array.mapi((function (i, ch) {
+                            }, $$Array.mapi((function (i, cc) {
                                     return React.createElement("span", {
-                                                key: String(i)
-                                              }, ch);
+                                                key: String(i),
+                                                title: cc[/* caption */1]
+                                              }, cc[/* text */0]);
                                   }), state[/* chars */0])));
             }),
           /* initialState */(function () {

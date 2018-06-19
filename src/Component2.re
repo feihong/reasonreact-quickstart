@@ -2,9 +2,14 @@ let str = ReasonReact.string;
 
 Random.self_init();
 
+type coolChar = {
+  text: string,
+  caption: string,
+}
+
 /* State declaration */
 type state = {
-  chars: array(string),
+  chars: array(coolChar),
   mode: string,
 };
 
@@ -12,7 +17,7 @@ type state = {
 type action =
   | Fetch
   | Clear
-  | CharLoaded(string)
+  | CharLoaded(coolChar)
   | ChangeMode(string);
 
 /* Component template declaration.
@@ -28,12 +33,23 @@ let getMode = (mode) =>
   } else 
     mode;
 
-let fetchSomething = ({ReasonReact.state, send}) => {
-  /* You need an extra annotation to help type inference */
+/* You need an extra annotation to help type inference */
+let fetchSomething = ({ReasonReact.state, send}) => {  
   let mode = getMode(state.mode);
+  /* send(CharLoaded({text: "W", caption: "wow"})); */
   switch (mode) {
-  | "Hanzi" => ApiClient.getHanzi(hanzi => hanzi.text |. CharLoaded |. send)
-  | "Emoji" => ApiClient.getEmoji(emoji => emoji.text |. CharLoaded |. send)
+  | "Hanzi" => ApiClient.getHanzi(hanzi => 
+      {
+        text: hanzi.text, 
+        caption: Printf.sprintf("Code point: %d", hanzi.ordinal),
+      }
+      |. CharLoaded |. send)
+  | "Emoji" => ApiClient.getEmoji(emoji => 
+      {
+        text: emoji.text, 
+        caption: Printf.sprintf("%s (%s)", emoji.shortname, emoji.category),
+      } 
+      |. CharLoaded |. send)
   | _ => ()
   }
 };
@@ -102,7 +118,10 @@ let make = (_children) => {
       <div className="chars">
         (
           state.chars 
-          |> Array.mapi((i, ch) => <span key=string_of_int(i)>(str(ch))</span>)
+          |> Array.mapi((i, cc) => 
+              <span key=string_of_int(i) title=cc.caption>
+                (str(cc.text))
+              </span>)
           |> ReasonReact.array
         )
       </div>

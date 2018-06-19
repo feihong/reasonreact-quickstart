@@ -6,7 +6,7 @@ const emojis = Object.keys(emojione.emojioneList)
   .map(shortname => {
     let em = emojione.emojioneList[shortname]
     return {
-      shortname,
+      shortname: shortname.slice(1, -1),
       text: emojione.convert(em.uc_output),
       category: em.category,
     } 
