@@ -2,25 +2,34 @@
   "name": "hello-react",
   "version": "0.1.0",
   "scripts": {
+    "start": "node server.js",
     "build": "bsb -make-world && webpack",
-    "start": "bsb -make-world && webpack && node server.js",
+    "server": "nodemon server.js",
+    "dev": "concurrently --kill-others-on-fail \"bsb -make-world -w\" \"webpack -w\" \"yarn server\"",
     "clean": "bsb -clean-world",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "BuckleScript"
+    "node",
+    "glitch",
+    "reasonml",
+    "react",
+    "express"
   ],
+  "engines": {
+    "node": "10.x"
+  },
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.16.3",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "reason-react": ">=0.4.0"
+    "express": "^4.16.3"
   },
   "devDependencies": {
     "bs-platform": "^3.1.5",
-    "webpack": "^4.0.1",
-    "webpack-cli": "^2.0.10"
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
+    "reason-react": ">=0.4.2",
+    "webpack": "^4.12.0",
+    "webpack-cli": "^3.0.8"
   }
 }

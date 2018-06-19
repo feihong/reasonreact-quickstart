@@ -5,7 +5,7 @@ import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
 import * as ReasonReact from "reason-react/src/ReasonReact.js";
 
-var component = ReasonReact.reducerComponent("Example");
+var component = ReasonReact.reducerComponent("Component2");
 
 function make(greeting, _) {
   return /* record */[
