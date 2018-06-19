@@ -1,5 +1,17 @@
 const express = require('express')
 const app = express()
+const emojione = require('emojione')
+
+const emojis = Object.keys(emojione.emojioneList)
+  .map(shortname => {
+    let em = emojione.emojioneList[shortname]
+    return {
+      shortname,
+      text: emojione.convert(em.uc_output),
+      category: em.category,
+    } 
+  })
+  .filter(em => em.category != 'flags')
 
 app.use(express.static('public'))
 
@@ -17,6 +29,11 @@ app.get('/hanzi', (req, res) => {
     text: String.fromCodePoint(ord),
     ordinal: ord,
   })
+})
+
+app.get('/emoji', (req, res) => {
+  let index = getRandomInt(0, emojis.length - 1)
+  res.status(200).json(emojis[index])
 })
 
 const listener = app.listen(process.env.PORT || 8000, () => {

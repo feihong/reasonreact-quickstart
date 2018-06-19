@@ -1,6 +1,7 @@
 type mode = 
   | Hanzi
-  | Emoji;
+  | Emoji
+  | Both;
 
 /* State declaration */
 type state = {
