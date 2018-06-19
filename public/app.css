@@ -3,3 +3,8 @@
   padding: 1rem;
   border: 1px dashed gray;
 }
+
+.chars span {
+  margin-right: 1rem;
+  font-size: 3rem;
+}

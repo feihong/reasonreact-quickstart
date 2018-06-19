@@ -9,7 +9,7 @@ var message = "你好世界！";
 
 ReactDOMRe.renderToElementWithId(ReasonReact.element(/* None */0, /* None */0, Component1$ReactTemplate.make(message, /* array */[])), "index1");
 
-ReactDOMRe.renderToElementWithId(ReasonReact.element(/* None */0, /* None */0, Component2$ReactTemplate.make("Hello!", /* array */[])), "index2");
+ReactDOMRe.renderToElementWithId(ReasonReact.element(/* None */0, /* None */0, Component2$ReactTemplate.make(/* array */[])), "index2");
 
 export {
   message ,

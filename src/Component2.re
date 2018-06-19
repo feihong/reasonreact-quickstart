@@ -1,3 +1,5 @@
+let str = ReasonReact.string;
+
 type mode = 
   | Hanzi
   | Emoji
@@ -5,45 +7,79 @@ type mode =
 
 /* State declaration */
 type state = {
-  count: int,
-  show: bool,
+  chars: array(string),
+  mode: mode,
 };
 
 /* Action declaration */
 type action =
-  | Click
-  | Toggle;
+  | Fetch
+  | CharLoaded(string)
+  | ChangeMode(mode);
 
 /* Component template declaration.
    Needs to be **after** state and action declarations! */
 let component = ReasonReact.reducerComponent("Component2");
 
+/* let fetchSomething = self: component => {
+  let mode = self.state.mode;
+  switch (mode) {
+  | Hanzi => ApiClient.getHanzi(hanzi => 
+  |   self.send(CharLoaded(hanzi.text)))
+  | Emoji => ApiClient.getEmoji(emoji => 
+  |   self.send(CharLoaded(emoji.text))) 
+  | _ => ()
+  }
+}; */
+
 /* greeting and children are props. `children` isn't used, therefore ignored.
    We ignore it by prepending it with an underscore */
-let make = (~greeting, _children) => {
+let make = (_children) => {
   /* spread the other default fields of component here and override a few */
   ...component,
 
-  initialState: () => {count: 0, show: true},
+  initialState: () => {chars: [||], mode: Hanzi},
+
+  didMount: self => self.send(Fetch),
 
   /* State transitions */
   reducer: (action, state) =>
     switch (action) {
-    | Click => ReasonReact.Update({...state, count: state.count + 1})
-    | Toggle => ReasonReact.Update({...state, show: ! state.show})
+    | ChangeMode(mode) => ReasonReact.Update({...state, mode: mode})
+    | Fetch => ReasonReact.SideEffects(self => {
+        ApiClient.getHanzi(hanzi => self.send(CharLoaded(hanzi.text)));
+        ApiClient.getEmoji(emoji => self.send(CharLoaded(emoji.text)));
+      })
+    | CharLoaded(text) => 
+        ReasonReact.Update({
+          ...state, 
+          chars: Array.append(state.chars, [|text|])
+        })
     },
 
   render: self => {
-    let message =
-      "You've clicked this " ++ string_of_int(self.state.count) ++ " times(s)";
+    let changeModeOption = (label, mode) =>
+      <option onClick=(_evt => self.send(ChangeMode(mode)))>
+        (str(label))
+      </option>;
+
     <div>
-      <button onClick=(_event => self.send(Click))>
-        (ReasonReact.string(message))
+      <select>
+        (changeModeOption("Hanzi", Hanzi))
+        (changeModeOption("Emoji", Emoji))
+        (changeModeOption("Both", Both))
+      </select>
+      <button className="btn btn-primary btn-sm"
+              onClick=(_ => self.send(Fetch))>
+        (str("Generate"))
       </button>
-      <button onClick=(_event => self.send(Toggle))>
-        (ReasonReact.string("Toggle greeting"))
-      </button>
-      (self.state.show ? ReasonReact.string(greeting) : ReasonReact.null)
+      <div className="chars">
+        (
+          self.state.chars 
+          |> Array.map(ch => <span key=ch>(str(ch))</span>)
+          |> ReasonReact.array
+        )
+      </div>
     </div>;
   },
 };
