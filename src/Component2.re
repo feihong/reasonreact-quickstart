@@ -3,7 +3,7 @@ let str = ReasonReact.string;
 type mode = 
   | Hanzi
   | Emoji
-  | Both;
+  | Either;
 
 /* State declaration */
 type state = {
@@ -21,16 +21,24 @@ type action =
    Needs to be **after** state and action declarations! */
 let component = ReasonReact.reducerComponent("Component2");
 
-/* let fetchSomething = self: component => {
-  let mode = self.state.mode;
+let getMode = (mode) =>
+  if (mode == Either) {
+    switch (Random.int(2)) {
+    | 0 => Hanzi
+    | _ => Emoji
+    }
+  } else 
+    mode;
+
+let fetchSomething = self => {
+  /* You need an extra annotation to help type inference */
+  let mode = getMode(self.ReasonReact.state.mode);
   switch (mode) {
-  | Hanzi => ApiClient.getHanzi(hanzi => 
-  |   self.send(CharLoaded(hanzi.text)))
-  | Emoji => ApiClient.getEmoji(emoji => 
-  |   self.send(CharLoaded(emoji.text))) 
+  | Hanzi => ApiClient.getHanzi(hanzi => hanzi.text |. CharLoaded |. self.send)
+  | Emoji => ApiClient.getEmoji(emoji => emoji.text |. CharLoaded |. self.send)
   | _ => ()
   }
-}; */
+};
 
 /* greeting and children are props. `children` isn't used, therefore ignored.
    We ignore it by prepending it with an underscore */
@@ -38,7 +46,7 @@ let make = (_children) => {
   /* spread the other default fields of component here and override a few */
   ...component,
 
-  initialState: () => {chars: [||], mode: Hanzi},
+  initialState: () => {chars: [||], mode: Either},
 
   didMount: self => self.send(Fetch),
 
@@ -46,10 +54,7 @@ let make = (_children) => {
   reducer: (action, state) =>
     switch (action) {
     | ChangeMode(mode) => ReasonReact.Update({...state, mode: mode})
-    | Fetch => ReasonReact.SideEffects(self => {
-        ApiClient.getHanzi(hanzi => self.send(CharLoaded(hanzi.text)));
-        ApiClient.getEmoji(emoji => self.send(CharLoaded(emoji.text)));
-      })
+    | Fetch => ReasonReact.SideEffects(fetchSomething)
     | CharLoaded(text) => 
         ReasonReact.Update({
           ...state, 
@@ -67,7 +72,7 @@ let make = (_children) => {
       <select>
         (changeModeOption("Hanzi", Hanzi))
         (changeModeOption("Emoji", Emoji))
-        (changeModeOption("Both", Both))
+        (changeModeOption("Either", Either))
       </select>
       <button className="btn btn-primary btn-sm"
               onClick=(_ => self.send(Fetch))>

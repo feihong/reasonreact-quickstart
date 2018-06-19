@@ -4,6 +4,7 @@ import * as $$Array from "bs-platform/lib/es6/array.js";
 import * as Block from "bs-platform/lib/es6/block.js";
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
+import * as Random from "bs-platform/lib/es6/random.js";
 import * as ReasonReact from "reason-react/src/ReasonReact.js";
 import * as ApiClient$ReactTemplate from "./ApiClient.bs.js";
 
@@ -12,6 +13,36 @@ function str(prim) {
 }
 
 var component = ReasonReact.reducerComponent("Component2");
+
+function getMode(mode) {
+  if (mode === /* Either */2) {
+    var match = Random.$$int(2);
+    if (match !== 0) {
+      return /* Emoji */1;
+    } else {
+      return /* Hanzi */0;
+    }
+  } else {
+    return mode;
+  }
+}
+
+function fetchSomething(self) {
+  var mode = getMode(self[/* state */1][/* mode */1]);
+  switch (mode) {
+    case 0 : 
+        return ApiClient$ReactTemplate.getHanzi((function (hanzi) {
+                      return Curry._1(self[/* send */3], /* CharLoaded */Block.__(0, [hanzi[/* text */0]]));
+                    }));
+    case 1 : 
+        return ApiClient$ReactTemplate.getEmoji((function (emoji) {
+                      return Curry._1(self[/* send */3], /* CharLoaded */Block.__(0, [emoji[/* text */1]]));
+                    }));
+    case 2 : 
+        return /* () */0;
+    
+  }
+}
 
 function make() {
   return /* record */[
@@ -34,7 +65,7 @@ function make() {
                               })
                           }, label);
               };
-              return React.createElement("div", undefined, React.createElement("select", undefined, changeModeOption("Hanzi", /* Hanzi */0), changeModeOption("Emoji", /* Emoji */1), changeModeOption("Both", /* Both */2)), React.createElement("button", {
+              return React.createElement("div", undefined, React.createElement("select", undefined, changeModeOption("Hanzi", /* Hanzi */0), changeModeOption("Emoji", /* Emoji */1), changeModeOption("Either", /* Either */2)), React.createElement("button", {
                               className: "btn btn-primary btn-sm",
                               onClick: (function () {
                                   return Curry._1(self[/* send */3], /* Fetch */0);
@@ -50,20 +81,13 @@ function make() {
           /* initialState */(function () {
               return /* record */[
                       /* chars : array */[],
-                      /* mode : Hanzi */0
+                      /* mode : Either */2
                     ];
             }),
           /* retainedProps */component[/* retainedProps */11],
           /* reducer */(function (action, state) {
               if (typeof action === "number") {
-                return /* SideEffects */Block.__(1, [(function (self) {
-                              ApiClient$ReactTemplate.getHanzi((function (hanzi) {
-                                      return Curry._1(self[/* send */3], /* CharLoaded */Block.__(0, [hanzi[/* text */0]]));
-                                    }));
-                              return ApiClient$ReactTemplate.getEmoji((function (emoji) {
-                                            return Curry._1(self[/* send */3], /* CharLoaded */Block.__(0, [emoji[/* text */1]]));
-                                          }));
-                            })]);
+                return /* SideEffects */Block.__(1, [fetchSomething]);
               } else if (action.tag) {
                 return /* Update */Block.__(0, [/* record */[
                             /* chars */state[/* chars */0],
@@ -84,6 +108,8 @@ function make() {
 export {
   str ,
   component ,
+  getMode ,
+  fetchSomething ,
   make ,
   
 }
