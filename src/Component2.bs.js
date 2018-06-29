@@ -13,73 +13,21 @@ function str(prim) {
   return prim;
 }
 
-Random.self_init(/* () */0);
-
 var component = ReasonReact.reducerComponent("Component2");
 
-function getMode(mode) {
-  if (mode === "Either") {
-    var match = Random.$$int(2);
-    if (match !== 0) {
-      return "Emoji";
-    } else {
-      return "Hanzi";
-    }
-  } else {
-    return mode;
-  }
-}
-
-function fetchSomething(param) {
-  var send = param[/* send */3];
-  var mode = getMode(param[/* state */1][/* mode */1]);
-  switch (mode) {
-    case "Emoji" : 
-        return ApiClient$ReactTemplate.getEmoji((function (emoji) {
-                      return Curry._1(send, /* CharLoaded */Block.__(0, [/* record */[
-                                      /* text */emoji[/* text */1],
-                                      /* caption */Curry._2(Printf.sprintf(/* Format */[
-                                                /* String */Block.__(2, [
-                                                    /* No_padding */0,
-                                                    /* String_literal */Block.__(11, [
-                                                        " (",
-                                                        /* String */Block.__(2, [
-                                                            /* No_padding */0,
-                                                            /* Char_literal */Block.__(12, [
-                                                                /* ")" */41,
-                                                                /* End_of_format */0
-                                                              ])
-                                                          ])
-                                                      ])
-                                                  ]),
-                                                "%s (%s)"
-                                              ]), emoji[/* shortname */0], emoji[/* category */2])
-                                    ]]));
-                    }));
-    case "Hanzi" : 
-        return ApiClient$ReactTemplate.getHanzi((function (hanzi) {
-                      return Curry._1(send, /* CharLoaded */Block.__(0, [/* record */[
-                                      /* text */hanzi[/* text */0],
-                                      /* caption */Curry._1(Printf.sprintf(/* Format */[
-                                                /* String_literal */Block.__(11, [
-                                                    "Code point: ",
-                                                    /* Int */Block.__(4, [
-                                                        /* Int_d */0,
-                                                        /* No_padding */0,
-                                                        /* No_precision */0,
-                                                        /* End_of_format */0
-                                                      ])
-                                                  ]),
-                                                "Code point: %d"
-                                              ]), hanzi[/* ordinal */1])
-                                    ]]));
-                    }));
-    default:
-      return /* () */0;
-  }
-}
-
 function make() {
+  var getMode = function (mode) {
+    if (mode === "Either") {
+      var match = Random.$$int(2);
+      if (match !== 0) {
+        return "Emoji";
+      } else {
+        return "Hanzi";
+      }
+    } else {
+      return mode;
+    }
+  };
   return /* record */[
           /* debugName */component[/* debugName */0],
           /* reactClassInternal */component[/* reactClassInternal */1],
@@ -137,7 +85,55 @@ function make() {
           /* reducer */(function (action, state) {
               if (typeof action === "number") {
                 if (action === 0) {
-                  return /* SideEffects */Block.__(1, [fetchSomething]);
+                  return /* SideEffects */Block.__(1, [(function (self) {
+                                var state = self[/* state */1];
+                                var send = self[/* send */3];
+                                var mode = getMode(state[/* mode */1]);
+                                switch (mode) {
+                                  case "Emoji" : 
+                                      return ApiClient$ReactTemplate.getEmoji((function (emoji) {
+                                                    return Curry._1(send, /* CharLoaded */Block.__(0, [/* record */[
+                                                                    /* text */emoji[/* text */1],
+                                                                    /* caption */Curry._2(Printf.sprintf(/* Format */[
+                                                                              /* String */Block.__(2, [
+                                                                                  /* No_padding */0,
+                                                                                  /* String_literal */Block.__(11, [
+                                                                                      " (",
+                                                                                      /* String */Block.__(2, [
+                                                                                          /* No_padding */0,
+                                                                                          /* Char_literal */Block.__(12, [
+                                                                                              /* ")" */41,
+                                                                                              /* End_of_format */0
+                                                                                            ])
+                                                                                        ])
+                                                                                    ])
+                                                                                ]),
+                                                                              "%s (%s)"
+                                                                            ]), emoji[/* shortname */0], emoji[/* category */2])
+                                                                  ]]));
+                                                  }));
+                                  case "Hanzi" : 
+                                      return ApiClient$ReactTemplate.getHanzi((function (hanzi) {
+                                                    return Curry._1(send, /* CharLoaded */Block.__(0, [/* record */[
+                                                                    /* text */hanzi[/* text */0],
+                                                                    /* caption */Curry._1(Printf.sprintf(/* Format */[
+                                                                              /* String_literal */Block.__(11, [
+                                                                                  "Code point: ",
+                                                                                  /* Int */Block.__(4, [
+                                                                                      /* Int_d */0,
+                                                                                      /* No_padding */0,
+                                                                                      /* No_precision */0,
+                                                                                      /* End_of_format */0
+                                                                                    ])
+                                                                                ]),
+                                                                              "Code point: %d"
+                                                                            ]), hanzi[/* ordinal */1])
+                                                                  ]]));
+                                                  }));
+                                  default:
+                                    return /* () */0;
+                                }
+                              })]);
                 } else {
                   return /* Update */Block.__(0, [/* record */[
                               /* chars : array */[],
@@ -164,9 +160,7 @@ function make() {
 export {
   str ,
   component ,
-  getMode ,
-  fetchSomething ,
   make ,
   
 }
-/*  Not a pure module */
+/* component Not a pure module */

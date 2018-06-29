@@ -1,4 +1,4 @@
-#index1, #index2 {
+#index1, #index2, #index3 {
   margin-bottom: 1rem;
   padding: 1rem;
   border: 1px dashed gray;
@@ -7,4 +7,12 @@
 .chars span {
   margin-right: 1rem;
   font-size: 3rem;
+}
+
+#index3 button {
+  margin-right: 1rem;
+}
+
+#index3 span {
+  font-size: 2rem; 
 }

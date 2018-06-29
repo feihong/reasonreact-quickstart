@@ -22,13 +22,13 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.16.3"
+    "express": "^4.16.3",
+    "emojione": "^3.1.5"
   },
   "devDependencies": {
     "@glennsl/bs-json": "^2.0.0",
     "bs-axios": "^0.0.36",
     "bs-platform": "^3.1.5",
-    "emojione": "^3.1.5",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "reason-react": ">=0.4.2",
