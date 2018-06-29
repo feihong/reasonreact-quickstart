@@ -14,7 +14,7 @@ var component = ReasonReact.statelessComponent("Component1");
 
 var counter = [0];
 
-function handleClick(_, _$1) {
+function handleClick() {
   counter[0] = counter[0] + 1 | 0;
   var mesg = Curry._1(Printf.sprintf(/* Format */[
             /* String_literal */Block.__(11, [
@@ -46,10 +46,10 @@ function make(message, _) {
           /* willUnmount */component[/* willUnmount */6],
           /* willUpdate */component[/* willUpdate */7],
           /* shouldUpdate */component[/* shouldUpdate */8],
-          /* render */(function (self) {
+          /* render */(function () {
               return React.createElement("div", undefined, message, React.createElement("button", {
                               className: "btn btn-default btn-sm",
-                              onClick: Curry._1(self[/* handle */0], handleClick)
+                              onClick: handleClick
                             }, "Click me!"));
             }),
           /* initialState */component[/* initialState */10],

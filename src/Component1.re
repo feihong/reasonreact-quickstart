@@ -8,7 +8,7 @@ let component = ReasonReact.statelessComponent("Component1");
 let handleClick = {
   let counter = ref(0);
 
-  (_event, _self) => {
+  (_event) => {
     counter := counter^ + 1;
     let mesg = Printf.sprintf("You have clicked %d times", counter^);
     Js.log(mesg);
@@ -25,11 +25,11 @@ let handleClick = {
    `ReasonReact.element(Component1.make(~message="hello", [||]))` */
 let make = (~message, _children) => {
   ...component,
-  render: self =>
+  render: _self =>
     <div>
       (str(message))
       <button className="btn btn-default btn-sm"
-              onClick=(self.handle(handleClick))>
+              onClick=handleClick>
         (str("Click me!"))
       </button>
     </div>,
