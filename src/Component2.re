@@ -35,10 +35,8 @@ let make = (_children) => {
       mode;
 
   /* You need an extra annotation to help type inference */
-  let fetchSomething = (state, send) => {  
-    let mode = getMode(state.mode);
-    /* send(CharLoaded({text: "W", caption: "wow"})); */
-    switch (mode) {
+  let fetchSomething = ({ReasonReact.state, send}) => {  
+    switch (getMode(state.mode)) {
     | "Hanzi" => ApiClient.getHanzi(hanzi => 
         {
           text: hanzi.text, 
@@ -67,7 +65,7 @@ let make = (_children) => {
     /* State transitions */
     reducer: (action, state) => ReasonReact.(
       switch (action) {
-        | Fetch => SideEffects(self => fetchSomething(self.state, self.send))
+        | Fetch => SideEffects(self => fetchSomething(self))
         | Clear => Update({...state, chars: [||]})
         | ChangeMode(mode) => Update({...state, mode: mode})
         | CharLoaded(text) => 

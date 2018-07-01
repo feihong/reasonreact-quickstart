@@ -9,6 +9,7 @@ type action =
   | Reset
   | Double;
 
+/* Note how this stateless component takes a send argument */
 module DoubleButton = {
   let component = ReasonReact.statelessComponent("DoubleButton");
 

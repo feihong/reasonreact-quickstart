@@ -86,10 +86,10 @@ function make() {
               if (typeof action === "number") {
                 if (action === 0) {
                   return /* SideEffects */Block.__(1, [(function (self) {
-                                var state = self[/* state */1];
-                                var send = self[/* send */3];
-                                var mode = getMode(state[/* mode */1]);
-                                switch (mode) {
+                                var param = self;
+                                var send = param[/* send */3];
+                                var match = getMode(param[/* state */1][/* mode */1]);
+                                switch (match) {
                                   case "Emoji" : 
                                       return ApiClient$ReactTemplate.getEmoji((function (emoji) {
                                                     return Curry._1(send, /* CharLoaded */Block.__(0, [/* record */[
