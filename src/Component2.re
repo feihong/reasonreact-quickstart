@@ -1,5 +1,10 @@
 let str = ReasonReact.string;
 
+type mode = [
+  | `Hanzi
+  | `Emoji
+]
+
 type coolChar = {
   text: string,
   caption: string,
@@ -9,7 +14,7 @@ type coolChar = {
 type state = {
   chars: array(coolChar),
   mode: string,
-};
+}
 
 /* Action declaration */
 type action =

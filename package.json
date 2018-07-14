@@ -4,8 +4,10 @@
   "scripts": {
     "start": "node server.js",
     "build": "bsb -make-world && webpack",
+    "bs:watch": "bsb -make-world -w",
+    "webpack:watch": "webpack -w",
     "server": "nodemon server.js",
-    "dev": "concurrently --kill-others-on-fail \"bsb -make-world -w\" \"webpack -w\" \"yarn server\"",
+    "dev": "npm-run-all --parallel bs:watch webpack:watch server",
     "clean": "bsb -clean-world",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
