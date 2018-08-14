@@ -47,7 +47,7 @@ function make(message, _) {
           /* willUpdate */component[/* willUpdate */7],
           /* shouldUpdate */component[/* shouldUpdate */8],
           /* render */(function () {
-              return React.createElement("div", undefined, message, React.createElement("button", {
+              return React.createElement("div", undefined, React.createElement("span", undefined, message), React.createElement("button", {
                               className: "btn btn-default btn-sm",
                               onClick: handleClick
                             }, "Click me!"));

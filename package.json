@@ -10,7 +10,9 @@
     "server": "nodemon server.js",
     "dev": "run-p bsb:watch webpack:watch server",
     "clean": "bsb -clean-world",
-    "test": "yarn bsb:build && jest"
+    "pretest": "node scripts/change-bsconfig.js commonjs",
+    "test": "yarn bsb:build && jest",
+    "posttest": "node scripts/change-bsconfig.js es6"
   },
   "keywords": [
     "node",
@@ -32,7 +34,9 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "bs-axios": "^0.0.36",
+    "bs-enzyme": "^0.4.0",
     "bs-platform": "^4.0.3",
+    "enzyme-adapter-react-16": "^1.2.0",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "reason-react": "^0.5.3",

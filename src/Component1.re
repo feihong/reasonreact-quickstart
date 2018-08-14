@@ -13,7 +13,7 @@ let handleClick = {
     let mesg = Printf.sprintf("You have clicked %d times", counter^);
     Js.log(mesg);
   }
-}; 
+};
 
 /* `make` is the function that mandatorily takes `children` (if you want to use
    `JSX). `message` is a named argument, which simulates ReactJS props. Usage:
@@ -27,7 +27,7 @@ let make = (~message, _children) => {
   ...component,
   render: _self =>
     <div>
-      (str(message))
+      <span>(message->str)</span>
       <button className="btn btn-default btn-sm"
               onClick=handleClick>
         (str("Click me!"))

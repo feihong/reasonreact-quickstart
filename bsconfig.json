@@ -26,7 +26,8 @@
     "@glennsl/bs-json"
   ],
   "bs-dev-dependencies": [
-    "@glennsl/bs-jest"
+    "@glennsl/bs-jest",
+    "bs-enzyme"
   ],
   "refmt": 3
 }
