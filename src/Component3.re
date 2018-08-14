@@ -15,10 +15,10 @@ module DoubleButton = {
 
   let make = (~label, ~send, _children) => {
     ...component,
-    render: _self => 
+    render: _self =>
       <button className="btn btn-primary btn-sm"
               onClick=(_ => send(Double))>
-        (str(label))
+        (label->str)
       </button>
   };
 };
@@ -41,15 +41,15 @@ let make = (~startValue, _children) => {
     <div>
       <button className="btn btn-default btn-sm"
               onClick=(_ => self.send(Increment))>
-        (str("Increment"))
+        ("Increment"->str)
       </button>
       <button className="btn btn-default btn-sm"
               onClick=(_ => self.send(Reset))>
-        (str("Reset"))
+        ("Reset"->str)
       </button>
       <DoubleButton label="Double" send=self.send />
       <span>
-        (self.state.value |. string_of_int |. str)
+        (self.state.value->string_of_int->str)
       </span>
     </div>,
 };

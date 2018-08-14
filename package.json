@@ -4,12 +4,13 @@
   "scripts": {
     "start": "node server.js",
     "build": "bsb -make-world && webpack",
-    "bs:watch": "bsb -make-world -w",
+    "bsb:build": "bsb -make-world",
+    "bsb:watch": "bsb -make-world -w",
     "webpack:watch": "webpack -w",
     "server": "nodemon server.js",
-    "dev": "run-p bs:watch webpack:watch server",
+    "dev": "run-p bsb:watch webpack:watch server",
     "clean": "bsb -clean-world",
-    "test": "jest"
+    "test": "yarn bsb:build && jest"
   },
   "keywords": [
     "node",

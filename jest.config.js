@@ -1,6 +1,4 @@
 module.exports = {
-  // Whitelist certain directories
-  transformIgnorePatterns: [
-    "node_modules/(?!(@glennsl/bs-jest|bs-platform)/)"
-  ]
+  // Must be empty, otherwise /node_modules/ is the default
+  transformIgnorePatterns: []
 };

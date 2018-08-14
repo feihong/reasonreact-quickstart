@@ -41,19 +41,20 @@ function modeFromJs(param) {
 
 var component = ReasonReact.reducerComponent("Component2");
 
-function make() {
-  var getMode = function (x) {
-    if (x !== -659631771) {
-      return x;
+function getMode(x) {
+  if (x !== -659631771) {
+    return x;
+  } else {
+    var match = Random.$$int(2);
+    if (match !== 0) {
+      return /* Emoji */50782054;
     } else {
-      var match = Random.$$int(2);
-      if (match !== 0) {
-        return /* Emoji */50782054;
-      } else {
-        return /* Hanzi */894130468;
-      }
+      return /* Hanzi */894130468;
     }
-  };
+  }
+}
+
+function make() {
   var event2Mode = function (evt) {
     var x = evt.target;
     return Belt_Option.getWithDefault(modeFromJs(x.value), /* Either */-659631771);
@@ -201,6 +202,7 @@ export {
   modeToJs ,
   modeFromJs ,
   component ,
+  getMode ,
   make ,
   
 }
