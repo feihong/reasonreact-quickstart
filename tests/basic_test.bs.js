@@ -5,8 +5,11 @@ import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 import * as Component2$ReactTemplate from "../src/Component2.bs.js";
 
 describe("Basic", (function () {
-        return Jest.test("mod", (function () {
-                      return Jest.Expect[/* toBe */2](3, Jest.Expect[/* expect */0](3));
+        Jest.test("mod", (function () {
+                return Jest.Expect[/* toBe */2](3, Jest.Expect[/* expect */0](3));
+              }));
+        return Jest.test("will fail", (function () {
+                      return Jest.Expect[/* toBe */2](3, Jest.Expect[/* expect */0](77));
                     }));
       }));
 

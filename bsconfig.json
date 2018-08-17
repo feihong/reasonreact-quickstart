@@ -5,19 +5,20 @@
   },
   "sources": [
     {
-      "dir" : "src",
-      "subdirs" : true
-
+      "dir": "src",
+      "subdirs": true
     },
     {
-      "dir": "__tests__",
+      "dir": "tests",
       "type": "dev"
     }
   ],
-  "package-specs": [{
-    "module": "es6",
-    "in-source": true
-  }],
+  "package-specs": [
+    {
+      "module": "es6",
+      "in-source": true
+    }
+  ],
   "suffix": ".bs.js",
   "namespace": true,
   "bs-dependencies": [
