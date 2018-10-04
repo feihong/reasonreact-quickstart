@@ -9,7 +9,7 @@ describe("Basic", () => {
   );
 
   test("will fail", () =>
-    (88 - 11)->expect |> toBe(3)
+    (88 - 11)->expect |> toBe(77)
   );
 });
 

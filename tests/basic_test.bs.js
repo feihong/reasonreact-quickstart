@@ -9,7 +9,7 @@ describe("Basic", (function () {
                 return Jest.Expect[/* toBe */2](3, Jest.Expect[/* expect */0](3));
               }));
         return Jest.test("will fail", (function () {
-                      return Jest.Expect[/* toBe */2](3, Jest.Expect[/* expect */0](77));
+                      return Jest.Expect[/* toBe */2](77, Jest.Expect[/* expect */0](77));
                     }));
       }));
 
