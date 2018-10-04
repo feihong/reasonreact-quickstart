@@ -32,8 +32,8 @@ external makeProps:
   (
     ~minWidth: string,
     ~maxWidth: string,
-    ~minHeight: string,
-    ~maxHeight: string,
+    ~minHeight: string=?,
+    ~maxHeight: string=?,
     unit
   ) =>
   _ =
@@ -43,8 +43,8 @@ let make =
     (
       ~minWidth: CssUnit.t,
       ~maxWidth: CssUnit.t,
-      ~minHeight: CssUnit.t,
-      ~maxHeight: CssUnit.t,
+      ~minHeight: option(CssUnit.t)=?,
+      ~maxHeight: option(CssUnit.t)=?,
       children,
     ) =>
   CssUnit.(
@@ -54,8 +54,8 @@ let make =
         makeProps(
           ~minWidth=minWidth->unwrap,
           ~maxWidth=maxWidth->unwrap,
-          ~minHeight=minHeight->unwrap,
-          ~maxHeight=maxHeight->unwrap,
+          ~minHeight=?minHeight->unwrapOpt,
+          ~maxHeight=?maxHeight->unwrapOpt,
           (),
         ),
       children,

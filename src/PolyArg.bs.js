@@ -2,6 +2,7 @@
 
 import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
 import * as ReasonReact from "reason-react/src/ReasonReact.js";
+import * as Js_primitive from "bs-platform/lib/es6/js_primitive.js";
 import * as CoolReactLib from "cool-react-lib";
 
 function unwrap(v) {
@@ -52,12 +53,19 @@ var CssUnit = /* module */[
 ];
 
 function make(minWidth, maxWidth, minHeight, maxHeight, children) {
-  return ReasonReact.wrapJsForReason(CoolReactLib.default, {
-              minWidth: unwrap(minWidth),
-              maxWidth: unwrap(maxWidth),
-              minHeight: unwrap(minHeight),
-              maxHeight: unwrap(maxHeight)
-            }, children);
+  var tmp = {
+    minWidth: unwrap(minWidth),
+    maxWidth: unwrap(maxWidth)
+  };
+  var tmp$1 = Belt_Option.map(minHeight, unwrap);
+  if (tmp$1 !== undefined) {
+    tmp.minHeight = Js_primitive.valFromOption(tmp$1);
+  }
+  var tmp$2 = Belt_Option.map(maxHeight, unwrap);
+  if (tmp$2 !== undefined) {
+    tmp.maxHeight = Js_primitive.valFromOption(tmp$2);
+  }
+  return ReasonReact.wrapJsForReason(CoolReactLib.default, tmp, children);
 }
 
 export {
